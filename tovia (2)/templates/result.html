@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction Result{% endblock %}
+
+{% block content %}
+{% if error %}
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        <h2 class="mb-0"><i class="bi bi-exclamation-triangle-fill me-2"></i>Error</h2>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-danger" role="alert">
+            <strong>Error:</strong> {{ error }}
+        </div>
+        <div class="text-center">
+            <a href="/" class="btn btn-primary"><i class="bi bi-arrow-left me-1"></i>Try Again</a>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="card">
+    <div class="card-header bg-success text-white">
+        <h2 class="mb-0"><i class="bi bi-check-circle-fill me-2"></i>Prediction Result</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="alert alert-success text-center" role="alert">
+                    <h3 class="mb-2"><i class="bi bi-graph-up me-2"></i>Predicted Pathloss</h3>
+                    <h1 class="display-4 text-success">{{ result.prediction }} dB</h1>
+                    <p class="mb-0"><i class="bi bi-cpu me-1"></i>Using {{ result.model_type }} Model</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h5><i class="bi bi-list-check me-2"></i>Input Parameters</h5>
+                <table class="table table-striped table-sm">
+                    <tbody>
+                        <tr>
+                            <td><i class="bi bi-radio-waves me-1"></i><strong>Frequency:</strong></td>
+                            <td>{{ result.inputs.frequency }} MHz</td>
+                        </tr>
+                        <tr>
+                            <td><i class="bi bi-arrows-expand me-1"></i><strong>Distance:</strong></td>
+                            <td>{{ result.inputs.distance }} km</td>
+                        </tr>
+                        <tr>
+                            <td><i class="bi bi-tower me-1"></i><strong>Tx Height:</strong></td>
+                            <td>{{ result.inputs.tx_height }} m</td>
+                        </tr>
+                        <tr>
+                            <td><i class="bi bi-reception-4 me-1"></i><strong>Rx Height:</strong></td>
+                            <td>{{ result.inputs.rx_height }} m</td>
+                        </tr>
+                        <tr>
+                            <td><i class="bi bi-geo-alt-fill me-1"></i><strong>Environment:</strong></td>
+                            <td>{{ result.inputs.environment }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="/" class="btn btn-primary me-2"><i class="bi bi-arrow-repeat me-1"></i>New Prediction</a>
+            <button onclick="window.print()" class="btn btn-outline-secondary"><i class="bi bi-printer me-1"></i>Print Result</button>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-body">
+        <h5 class="card-title"><i class="bi bi-lightbulb me-2"></i>Understanding Your Result</h5>
+        <p><i class="bi bi-info-circle me-1"></i><strong>Pathloss</strong> represents the reduction in power density of an electromagnetic wave as it propagates through space.</p>
+        <ul class="list-unstyled">
+            <li><i class="bi bi-check-circle-fill text-success me-2"></i><strong>Lower values (< 100 dB):</strong> Good signal strength, suitable for communication</li>
+            <li><i class="bi bi-exclamation-triangle-fill text-warning me-2"></i><strong>Medium values (100-140 dB):</strong> Moderate signal strength, may require optimization</li>
+            <li><i class="bi bi-x-circle-fill text-danger me-2"></i><strong>Higher values (> 140 dB):</strong> Weak signal, may need repeaters or higher power</li>
+        </ul>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

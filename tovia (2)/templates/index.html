@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Pathloss Prediction - Input Parameters{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2 class="mb-0"><i class="bi bi-antenna-fill me-2"></i>Pathloss Prediction System</h2>
+        <p class="mb-0 mt-2">Enter the parameters below to predict signal pathloss</p>
+    </div>
+    <div class="card-body p-4">
+        <form method="POST" action="/predict" id="predictionForm">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="frequency" class="form-label">
+                        <i class="bi bi-radio-waves me-1"></i><strong>Frequency (MHz)</strong>
+                    </label>
+                    <input type="number"
+                           class="form-control form-control-sm"
+                           id="frequency"
+                           name="frequency"
+                           step="0.01"
+                           min="0.01"
+                           placeholder="e.g., 900.0"
+                           required>
+                    <div class="form-text">Operating frequency in MHz</div>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="distance" class="form-label">
+                        <i class="bi bi-arrows-expand me-1"></i><strong>Distance (km)</strong>
+                    </label>
+                    <input type="number"
+                           class="form-control form-control-sm"
+                           id="distance"
+                           name="distance"
+                           step="0.01"
+                           min="0.01"
+                           placeholder="e.g., 5.0"
+                           required>
+                    <div class="form-text">Distance between transmitter and receiver</div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="tx_height" class="form-label">
+                        <i class="bi bi-tower me-1"></i><strong>Transmitter Height (m)</strong>
+                    </label>
+                    <input type="number"
+                           class="form-control form-control-sm"
+                           id="tx_height"
+                           name="tx_height"
+                           step="0.1"
+                           min="0.1"
+                           placeholder="e.g., 30.0"
+                           required>
+                    <div class="form-text">Height of transmitting antenna</div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="rx_height" class="form-label">
+                        <i class="bi bi-reception-4 me-1"></i><strong>Receiver Height (m)</strong>
+                    </label>
+                    <input type="number"
+                           class="form-control form-control-sm"
+                           id="rx_height"
+                           name="rx_height"
+                           step="0.1"
+                           min="0.1"
+                           placeholder="e.g., 1.5"
+                           required>
+                    <div class="form-text">Height of receiving antenna</div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="environment" class="form-label">
+                        <i class="bi bi-geo-alt-fill me-1"></i><strong>Environment Type</strong>
+                    </label>
+                    <select class="form-select form-select-sm" id="environment" name="environment" required>
+                        <option value="">Select Environment</option>
+                        <option value="Urban">🏙️ Urban</option>
+                        <option value="Suburban">🏘️ Suburban</option>
+                        <option value="Rural">🌾 Rural</option>
+                        <option value="Dense Urban">🏢 Dense Urban</option>
+                    </select>
+                    <div class="form-text">Type of propagation environment</div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="model_type" class="form-label">
+                        <i class="bi bi-cpu me-1"></i><strong>Prediction Model</strong>
+                    </label>
+                    <select class="form-select form-select-sm" id="model_type" name="model_type" required>
+                        <option value="">Select Model</option>
+                        <option value="ann">🧠 ANN (Artificial Neural Network)</option>
+                        <option value="dnn">🕸️ DNN (Deep Neural Network)</option>
+                        <option value="cnn">🔍 CNN (Convolutional Neural Network)</option>
+                    </select>
+                    <div class="form-text">Choose the prediction model to use</div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-calculator me-2"></i>Predict Pathloss
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-body">
+        <h5 class="card-title"><i class="bi bi-info-circle me-2"></i>Instructions</h5>
+        <ul class="list-unstyled">
+            <li><i class="bi bi-radio-waves me-2"></i><strong>Frequency:</strong> Enter the operating frequency in MHz (e.g., 900, 1800, 2100)</li>
+            <li><i class="bi bi-arrows-expand me-2"></i><strong>Distance:</strong> Distance between transmitter and receiver in kilometers</li>
+            <li><i class="bi bi-tower me-2"></i><strong>Heights:</strong> Antenna heights in meters above ground level</li>
+            <li><i class="bi bi-geo-alt-fill me-2"></i><strong>Environment:</strong> Select the type of propagation environment</li>
+            <li><i class="bi bi-cpu me-2"></i><strong>Model:</strong> Choose between ANN, DNN, or CNN for prediction</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+document.getElementById('predictionForm').addEventListener('submit', function(e) {
+    const submitBtn = document.querySelector('button[type="submit"]');
+    submitBtn.innerHTML = 'Predicting...';
+    submitBtn.disabled = true;
+});
+</script>
+{% endblock %}
